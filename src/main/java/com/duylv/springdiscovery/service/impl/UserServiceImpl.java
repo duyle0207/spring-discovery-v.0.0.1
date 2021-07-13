@@ -25,17 +25,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User save(UserDTO userDto) {
+    public UserDTO save(UserDTO userDto) {
         Optional<User> existUser = userRepository
                 .findById(userDto.getId());
 
-        if (existUser.isPresent()) {
+        if (existUser.isPresent()) { // partial update
             userMapper.partialUpdate(existUser.get(), userDto);
-            return userRepository.save(existUser.get());
-        } else {
+            return userMapper.toDto(userRepository.save(existUser.get()));
+        } else { // create new one
             User user = userMapper.toEntity(userDto);
             user.getHomes().forEach(home -> home.setUser(user));
-            return userRepository.save(user);
+            return userMapper.toDto(userRepository.save(user));
         }
     }
 
