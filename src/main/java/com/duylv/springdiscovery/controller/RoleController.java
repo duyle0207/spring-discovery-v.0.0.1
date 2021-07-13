@@ -21,7 +21,7 @@ public class RoleController {
     }
 
     @PostMapping("/role")
-    public ResponseEntity<Role> save(RoleDTO userDTO) {
+    public ResponseEntity<RoleDTO> save(RoleDTO userDTO) {
         return ResponseEntity.ok(roleService.save(userDTO));
     }
 }

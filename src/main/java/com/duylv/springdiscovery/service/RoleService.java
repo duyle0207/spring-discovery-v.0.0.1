@@ -5,5 +5,5 @@ import com.duylv.springdiscovery.entity.Role;
 
 public interface RoleService {
 
-    Role save(RoleDTO roleDTO);
+    RoleDTO save(RoleDTO roleDTO);
 }

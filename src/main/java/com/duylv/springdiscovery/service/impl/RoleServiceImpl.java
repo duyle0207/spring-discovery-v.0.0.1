@@ -20,8 +20,8 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Role save(RoleDTO roleDTO) {
+    public RoleDTO save(RoleDTO roleDTO) {
         Role role = roleMapper.toEntity(roleDTO);
-        return roleRepository.save(role);
+        return roleMapper.toDto(roleRepository.save(role));
     }
 }
