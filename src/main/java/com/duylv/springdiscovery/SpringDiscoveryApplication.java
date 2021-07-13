@@ -16,19 +16,4 @@ public class SpringDiscoveryApplication {
 		SpringApplication.run(SpringDiscoveryApplication.class, args);
 	}
 
-	@Bean
-	public CommandLineRunner lookup(RoleMapper roleMapper) {
-		return args -> {
-			Role role = new Role();
-			role.setRoleName("roleName");
-
-			RoleDTO roleDTO = roleMapper.toDto(role);
-
-			System.out.println(roleDTO);
-
-//			String result = restTemplateService.getForObject("http://localhost:8080","/api/public/lst-user", String.class);
-//			System.out.println(result);
-		};
-	}
-
 }
