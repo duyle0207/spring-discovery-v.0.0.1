@@ -1,5 +1,6 @@
 package com.duylv.springdiscovery.controller;
 
+import com.duylv.springdiscovery.dto.UserCriteria;
 import com.duylv.springdiscovery.dto.UserDTO;
 import com.duylv.springdiscovery.dto.response.BaseResponseDTO;
 import com.duylv.springdiscovery.entity.User;
@@ -19,13 +20,18 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/user")
-    public ResponseEntity<UserDTO> saveUser(@RequestBody UserDTO userDTO) {
+    @PostMapping("/")
+    public ResponseEntity<UserDTO> saveUser(UserDTO userDTO) {
         return ResponseEntity.ok(userService.save(userDTO));
     }
 
-    @GetMapping("/user")
+    @GetMapping("/")
     public ResponseEntity<List<UserDTO>> findAll() {
-        return ResponseEntity.ok(userService.findAllUser());
+        return ResponseEntity.ok(userService.findAll());
+    }
+
+    @PostMapping("/filter")
+    public ResponseEntity<List<UserDTO>> filter(UserCriteria userCriteria) {
+        return ResponseEntity.ok(userService.findByCriteria(userCriteria));
     }
 }

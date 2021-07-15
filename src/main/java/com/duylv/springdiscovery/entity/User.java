@@ -1,19 +1,12 @@
 package com.duylv.springdiscovery.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
-import java.util.Objects;
 import java.util.Set;
 
 @Table(name = "user")
 @Entity
-@Getter
-@Setter
 public class User extends BaseEntity {
 
     @Id
@@ -23,6 +16,16 @@ public class User extends BaseEntity {
     private String username;
 
     private String password;
+
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     @ManyToMany
     @JsonIgnoreProperties(value = {"users"})
@@ -75,5 +78,4 @@ public class User extends BaseEntity {
     public void setHomes(Set<Home> homes) {
         this.homes = homes;
     }
-
 }

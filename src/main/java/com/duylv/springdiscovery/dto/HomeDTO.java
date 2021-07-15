@@ -1,9 +1,5 @@
 package com.duylv.springdiscovery.dto;
 
-import com.duylv.springdiscovery.entity.User;
-
-import javax.persistence.*;
-
 public class HomeDTO {
 
     private Long id;

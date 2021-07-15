@@ -1,8 +1,7 @@
 package com.duylv.springdiscovery.service;
 
 import com.duylv.springdiscovery.dto.UserDTO;
-import com.duylv.springdiscovery.entity.User;
-import org.springframework.data.domain.Pageable;
+import com.duylv.springdiscovery.dto.UserCriteria;
 
 import java.util.List;
 
@@ -12,5 +11,5 @@ public interface UserService {
 
     List<UserDTO> findAll();
 
-    List<UserDTO> findAllUser();
+    List<UserDTO> findByCriteria(UserCriteria userCriteria);
 }

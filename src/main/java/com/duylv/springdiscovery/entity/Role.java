@@ -9,8 +9,6 @@ import java.util.Set;
 
 @Table(name = "role")
 @Entity
-@Getter
-@Setter
 @JsonIgnoreProperties({"users"})
 public class Role extends BaseEntity {
 

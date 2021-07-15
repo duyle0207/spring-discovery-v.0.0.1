@@ -1,14 +1,18 @@
 package com.duylv.springdiscovery.service.impl;
 
+import com.duylv.springdiscovery.dto.UserCriteria;
 import com.duylv.springdiscovery.dto.UserDTO;
 import com.duylv.springdiscovery.entity.User;
+import com.duylv.springdiscovery.entity.User_;
 import com.duylv.springdiscovery.mapper.UserMapper;
 import com.duylv.springdiscovery.repository.UserRepository;
+import com.duylv.springdiscovery.service.FilterService;
 import com.duylv.springdiscovery.service.UserService;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -19,9 +23,12 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
-    public UserServiceImpl(UserMapper userMapper, UserRepository userRepository) {
+    private final FilterService<User> filterService;
+
+    public UserServiceImpl(UserMapper userMapper, UserRepository userRepository, FilterService<User> filterService) {
         this.userMapper = userMapper;
         this.userRepository = userRepository;
+        this.filterService = filterService;
     }
 
     @Override
@@ -45,7 +52,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDTO> findAllUser() {
-        return userRepository.findAll().stream().map(userMapper::toDto).collect(Collectors.toList());
+    public List<UserDTO> findByCriteria(UserCriteria userCriteria) {
+        Specification<User> userSpecification = Specification.where(null);
+
+        if (!Objects.isNull(userCriteria.getUsername())) {
+            userSpecification = userSpecification.and(filterService.buildStringSpecification(userCriteria.getUsername(), User_.username));
+        }
+
+        if (!Objects.isNull(userCriteria.getName())) {
+            userSpecification = userSpecification.and(filterService.buildStringSpecification(userCriteria.getName(), User_.name));
+        }
+
+        return userRepository.findAll(userSpecification).stream().map(userMapper::toDto).collect(Collectors.toList());
     }
 }

@@ -9,4 +9,16 @@ public class StringUtil {
         Arrays.asList(str).forEach(stringBuilder::append);
         return stringBuilder.toString();
     }
+
+    public static String customLikeKeyword(String keyword) {
+        return "%" + keyword + "%";
+    }
+
+    public static String customStartWithKeyword(String keyword) {
+        return keyword + "%";
+    }
+
+    public static String customEndWithKeyword(String keyword) {
+        return "%" + keyword;
+    }
 }

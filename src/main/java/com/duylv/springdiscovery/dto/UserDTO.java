@@ -1,18 +1,5 @@
 package com.duylv.springdiscovery.dto;
 
-import com.duylv.springdiscovery.entity.Home;
-import com.duylv.springdiscovery.entity.Role;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-
-import javax.persistence.*;
-import java.util.Set;
-
-@Getter
-@Setter
 public class UserDTO {
 
     private Long id;
@@ -21,9 +8,15 @@ public class UserDTO {
 
     private String password;
 
-    private Set<RoleDTO> roles;
+    private String name;
 
-    private Set<HomeDTO> homes;
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public Long getId() {
         return id;
@@ -47,21 +40,5 @@ public class UserDTO {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Set<RoleDTO> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<RoleDTO> roles) {
-        this.roles = roles;
-    }
-
-    public Set<HomeDTO> getHomes() {
-        return homes;
-    }
-
-    public void setHomes(Set<HomeDTO> homes) {
-        this.homes = homes;
     }
 }
