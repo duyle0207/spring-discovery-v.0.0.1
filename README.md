@@ -1,4 +1,4 @@
-# spring-discovery-relation
+# spring-discovery
 
 Handler Relational Spring Sample. It contains things that I have experienced as Java Developer at Company. Of course, it can't be the best solution for anyone. If you have better ideas, let's share with us in order to expands knowledge to our **Comunity**.
 
