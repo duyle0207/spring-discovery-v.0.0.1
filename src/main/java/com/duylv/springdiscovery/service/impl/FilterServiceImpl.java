@@ -27,13 +27,9 @@ public class FilterServiceImpl<T> implements FilterService<T> {
      * @return Specification<T>
      */
     @Override
-    public Specification<T> buildStringSpecification(StringFilter stringFilter, SingularAttribute<? super T, ?> col) {
-        return (((root, criteriaQuery, criteriaBuilder) -> criteriaBuilder
-                .and(stringFilterService
-                        .buildPredicate(stringFilter, col, root, criteriaBuilder)
-                        .toArray(new Predicate[]{}))
-        ));
-    }
+    public Specification<T> buildStringSpecification(StringFilter stringFilter, SingularAttribute<? super T, String> col) {
+        return stringFilterService.build(stringFilter, root -> root.get(col));
+    };
 
     // TODO
     @Override

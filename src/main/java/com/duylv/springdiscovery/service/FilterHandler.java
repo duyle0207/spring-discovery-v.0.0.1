@@ -1,17 +1,21 @@
 package com.duylv.springdiscovery.service;
 
+import org.springframework.data.jpa.domain.Specification;
+
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.SingularAttribute;
+import java.util.function.Function;
 
 public interface FilterHandler<T> {
 
-    Predicate equal(SingularAttribute<? super T,?> col, Object value, Root<T> root, CriteriaBuilder criteriaBuilder);
+    <X> Specification<T> equal(Function<Root<T>, Expression<X>> metaClassFunction, String value);
 
-    Predicate in(SingularAttribute<? super T, ?> col, Object value, Root<T> root, CriteriaBuilder criteriaBuilder);
+    <X> Specification<T> in(Function<Root<T>, Expression<X>> metaClassFunction, String value);
 
-    Predicate notIn(SingularAttribute<? super T,?> col, Object value, Root<T> root, CriteriaBuilder criteriaBuilder);
+    <X> Specification<T> notIn(Function<Root<T>, Expression<X>> metaClassFunction, String value);
 
-    Predicate like(SingularAttribute<? super T,?> col, Object value, Root<T> root, CriteriaBuilder criteriaBuilder);
+    <X> Specification<T> like(Function<Root<T>, Expression<String>> metaClassFunction, String value);
 }
