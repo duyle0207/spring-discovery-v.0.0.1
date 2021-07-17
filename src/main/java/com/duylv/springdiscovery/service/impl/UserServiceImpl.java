@@ -14,9 +14,6 @@ import com.querydsl.jpa.impl.JPAQuery;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -32,9 +29,6 @@ public class UserServiceImpl implements UserService {
     private final FilterService<User> filterService;
 
     private final JPAQuery<User> queryCustom;
-
-    @PersistenceContext
-    private EntityManager entityManager;
 
     public UserServiceImpl(UserMapper userMapper, UserRepository userRepository, FilterService<User> filterService, JPAQuery<User> queryCustom) {
         this.userMapper = userMapper;
@@ -76,7 +70,6 @@ public class UserServiceImpl implements UserService {
             userSpecification = userSpecification.and(filterService.buildStringSpecification(userCriteria.getName(), User_.name));
         }
 
-        // userSpecification = userSpecification.and(joinService.joinHandler());
         return userRepository.findAll(userSpecification).stream().map(userMapper::toDto).collect(Collectors.toList());
     }
 
@@ -86,24 +79,28 @@ public class UserServiceImpl implements UserService {
         QUser qUser = QUser.user;
         QHome qHome = QHome.home;
 
-         List<UserDTO> users = queryCustom
-                 .from(qUser)
-                 .leftJoin(qUser.homes, qHome)
-                 .on(qHome.address.eq("Duy"))
-                 .groupBy(QUser.user.id)
-                 .select(
-                         qUser.id,
-                         qUser.username,
-                         qUser.name,
-                         qHome.address
-                 )
-                 .fetch()
-                 .stream()
-                 .map(user -> new UserDTO(user.get(qUser.id),
-                         user.get(qUser.username),
-                         user.get(qUser.name),
-                         !Objects.isNull(user.get(qHome.address))))
-                 .collect(Collectors.toList());;
+        List<UserDTO> users = queryCustom
+                .from(qUser)
+                .leftJoin(qUser.homes, qHome)
+                .on(qHome.address.eq("Duy"))
+                .groupBy(QUser.user.id)
+                .select(
+                        qUser.id,
+                        qUser.username,
+                        qUser.name,
+                        qHome.address
+                )
+                .fetch()
+                .stream()
+                .map(user -> new UserDTO(
+                            user.get(qUser.id),
+                            user.get(qUser.username),
+                            user.get(qUser.name),
+                            !Objects.isNull(user.get(qHome.address))
+                        )
+                )
+                .collect(Collectors.toList());
+        ;
 
         return users;
     }
