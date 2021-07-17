@@ -16,5 +16,9 @@ I have made some custom to make it easier to use.
 
 - Use this /api/user/filter?username.equal=Duy_1&name.like=Le Van
 - You can get your expected result. It can help FE developer filter as if they write a SQL Query right :D.
+
+>> In my opinion, We should use JPA Specification in order to do filter relating to 1 entity 
+or use in case of inner join.
+Because it always return entired object all the time.
 ```
 ###### 5. Updating....
