@@ -23,8 +23,9 @@ Because it always return entired object all the time.
 ```
 ###### 6. QueryDSL:
 
+```
 Hung from my university recommended me to use it when we worked together in his thesis project. However, at this time
-I didn't know how powerfull it is :D.
+I didn't know how powerfull it is :D. Shout out to Hung.
 
 There are many people getting stuck with Spring SPA when they want to write a query as it is not easy to do mapping step
 from ResultSet to Entity. My company's project, they intend to use JPA Specification to replace @Query.
@@ -32,5 +33,6 @@ However, as I mentioned above, we should use Specification for filter data from 
 more objects, we will cope with some issue when we fetch data. 
 
 Therefore, my recommendation is let use QueryDSL instead of using @Query for native query.
+```
 
 ###### 5. Updating....
