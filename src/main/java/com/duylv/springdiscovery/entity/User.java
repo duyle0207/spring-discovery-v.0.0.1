@@ -27,7 +27,7 @@ public class User extends BaseEntity {
         this.name = name;
     }
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = {"users"})
     @JoinTable(
             name = "user_role",
@@ -36,7 +36,7 @@ public class User extends BaseEntity {
     )
     private Set<Role> roles;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<Home> homes;
 
     public Long getId() {

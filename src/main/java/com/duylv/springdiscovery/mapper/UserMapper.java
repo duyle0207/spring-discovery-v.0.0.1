@@ -11,6 +11,7 @@ import org.mapstruct.Mapping;
 public interface UserMapper extends EntityMapper<User, UserDTO> {
 
     @Override
+    @Mapping(expression = "java(!e.getHomes().isEmpty())", target = "haveHome")
     UserDTO toDto(User e);
 
     @Override

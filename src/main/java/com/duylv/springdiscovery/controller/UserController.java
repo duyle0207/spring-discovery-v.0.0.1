@@ -34,4 +34,9 @@ public class UserController {
     public ResponseEntity<List<UserDTO>> filter(UserCriteria userCriteria) {
         return ResponseEntity.ok(userService.findByCriteria(userCriteria));
     }
+
+    @PostMapping("/user_has_home")
+    public ResponseEntity<List<UserDTO>> filter() {
+        return ResponseEntity.ok(userService.findUserHasHome());
+    }
 }

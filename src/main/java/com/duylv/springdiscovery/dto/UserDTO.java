@@ -1,5 +1,11 @@
 package com.duylv.springdiscovery.dto;
 
+import com.duylv.springdiscovery.entity.Home;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import java.util.List;
+import java.util.Set;
+
 public class UserDTO {
 
     private Long id;
@@ -9,6 +15,36 @@ public class UserDTO {
     private String password;
 
     private String name;
+
+    private List<HomeDTO> homes;
+
+    private Boolean haveHome;
+
+    public UserDTO() {
+    }
+
+    public UserDTO(Long id, String username, String name, Boolean haveHome) {
+        this.id = id;
+        this.username = username;
+        this.name = name;
+        this.haveHome = haveHome;
+    }
+
+    public List<HomeDTO> getHomes() {
+        return homes;
+    }
+
+    public void setHomes(List<HomeDTO> homes) {
+        this.homes = homes;
+    }
+
+    public Boolean getHaveHome() {
+        return haveHome;
+    }
+
+    public void setHaveHome(Boolean haveHome) {
+        this.haveHome = haveHome;
+    }
 
     public String getName() {
         return name;
