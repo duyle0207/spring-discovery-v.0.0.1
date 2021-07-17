@@ -75,11 +75,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDTO> findUserHasHome() {
-
         QUser qUser = QUser.user;
         QHome qHome = QHome.home;
 
-        List<UserDTO> users = queryCustom
+        return queryCustom
                 .from(qUser)
                 .leftJoin(qUser.homes, qHome)
                 .on(qHome.address.eq("Duy"))
@@ -93,16 +92,13 @@ public class UserServiceImpl implements UserService {
                 .fetch()
                 .stream()
                 .map(user -> new UserDTO(
-                            user.get(qUser.id),
-                            user.get(qUser.username),
-                            user.get(qUser.name),
-                            !Objects.isNull(user.get(qHome.address))
+                                user.get(qUser.id),
+                                user.get(qUser.username),
+                                user.get(qUser.name),
+                                !Objects.isNull(user.get(qHome.address))
                         )
                 )
                 .collect(Collectors.toList());
-        ;
-
-        return users;
     }
 
 }

@@ -23,7 +23,7 @@ public class UserDTO {
     public UserDTO() {
     }
 
-    public UserDTO(Long id, String username, String name, Boolean haveHome) {
+    public UserDTO(Long id, String username, String name, Boolean haveHomes) {
         this.id = id;
         this.username = username;
         this.name = name;
