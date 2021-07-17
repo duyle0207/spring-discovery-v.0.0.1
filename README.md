@@ -21,6 +21,8 @@ I have made some custom to make it easier to use.
 or use in case of inner join.
 Because it always return entired object all the time.
 ```
+```One more recommendation. Let's use rsql-parser to parse your url. It's easier than use my way```
+
 ###### 6. QueryDSL:
 
 ```
