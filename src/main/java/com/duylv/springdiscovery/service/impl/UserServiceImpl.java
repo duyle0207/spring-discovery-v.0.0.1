@@ -10,17 +10,13 @@ import com.duylv.springdiscovery.mapper.UserMapper;
 import com.duylv.springdiscovery.repository.UserRepository;
 import com.duylv.springdiscovery.service.FilterService;
 import com.duylv.springdiscovery.service.UserService;
-import com.duylv.springdiscovery.specification.JoinService;
-import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQuery;
-import cz.jirutka.rsql.parser.RSQLParser;
-import cz.jirutka.rsql.parser.ast.Node;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.Collections;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -35,13 +31,16 @@ public class UserServiceImpl implements UserService {
 
     private final FilterService<User> filterService;
 
+    private final JPAQuery<User> queryCustom;
+
     @PersistenceContext
     private EntityManager entityManager;
 
-    public UserServiceImpl(UserMapper userMapper, UserRepository userRepository, FilterService<User> filterService) {
+    public UserServiceImpl(UserMapper userMapper, UserRepository userRepository, FilterService<User> filterService, JPAQuery<User> queryCustom) {
         this.userMapper = userMapper;
         this.userRepository = userRepository;
         this.filterService = filterService;
+        this.queryCustom = queryCustom;
     }
 
     @Override
@@ -84,12 +83,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDTO> findUserHasHome() {
 
-        JPAQuery<User> query = new JPAQuery<>(entityManager);
-
         QUser qUser = QUser.user;
         QHome qHome = QHome.home;
 
-         List<UserDTO> users = query
+         List<UserDTO> users = queryCustom
                  .from(qUser)
                  .leftJoin(qUser.homes, qHome)
                  .on(qHome.address.eq("Duy"))
