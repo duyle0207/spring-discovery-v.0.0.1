@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Root;
 import javax.persistence.criteria.SetJoin;
 import javax.persistence.metamodel.SingularAttribute;
 
@@ -17,14 +18,14 @@ public class JoinService {
 
     public Specification<User> joinHandler() {
         return (root, criteriaQuery, criteriaBuilder) -> {
+
             Join<User, Home> userHomeSetJoin = root.join(User_.homes, JoinType.LEFT);
-            return criteriaQuery
-                    .multiselect(
-                            userHomeSetJoin.get(Home_.address)
-                    )
-                    .where(
-                            criteriaBuilder.equal(userHomeSetJoin.get(Home_.address), "Duy")
-                    ).getRestriction();
+            userHomeSetJoin.on(criteriaBuilder.equal(userHomeSetJoin.get(Home_.address), "1"));
+
+            // group by
+            criteriaQuery.groupBy(root.get(User_.id));
+
+            return criteriaQuery.getRestriction();
         };
     }
 

@@ -10,10 +10,14 @@ import com.duylv.springdiscovery.mapper.UserMapper;
 import com.duylv.springdiscovery.repository.UserRepository;
 import com.duylv.springdiscovery.service.FilterService;
 import com.duylv.springdiscovery.service.UserService;
+import com.duylv.springdiscovery.specification.JoinService;
 import com.querydsl.jpa.impl.JPAQuery;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Tuple;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -30,11 +34,17 @@ public class UserServiceImpl implements UserService {
 
     private final JPAQuery<User> queryCustom;
 
-    public UserServiceImpl(UserMapper userMapper, UserRepository userRepository, FilterService<User> filterService, JPAQuery<User> queryCustom) {
+    private final JoinService joinService;
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    public UserServiceImpl(UserMapper userMapper, UserRepository userRepository, FilterService<User> filterService, JPAQuery<User> queryCustom, JoinService joinService) {
         this.userMapper = userMapper;
         this.userRepository = userRepository;
         this.filterService = filterService;
         this.queryCustom = queryCustom;
+        this.joinService = joinService;
     }
 
     @Override
@@ -70,6 +80,8 @@ public class UserServiceImpl implements UserService {
             userSpecification = userSpecification.and(filterService.buildStringSpecification(userCriteria.getName(), User_.name));
         }
 
+        userSpecification = userSpecification.and(joinService.joinHandler());
+
         return userRepository.findAll(userSpecification).stream().map(userMapper::toDto).collect(Collectors.toList());
     }
 
@@ -78,13 +90,15 @@ public class UserServiceImpl implements UserService {
         QUser qUser = QUser.user;
         QHome qHome = QHome.home;
 
-        return queryCustom
+        JPAQuery<User> query = new JPAQuery<>(entityManager);
+
+        return query
                 .from(qUser)
                 .leftJoin(qUser.homes, qHome)
                 .on(qHome.address.eq("Duy"))
                 .groupBy(QUser.user.id)
                 .select(
-                        qUser.id,
+                        qHome.id.count(),
                         qUser.username,
                         qUser.name,
                         qHome.address
@@ -92,10 +106,10 @@ public class UserServiceImpl implements UserService {
                 .fetch()
                 .stream()
                 .map(user -> new UserDTO(
-                                user.get(qUser.id),
+                                user.get(qHome.id.count()),
                                 user.get(qUser.username),
                                 user.get(qUser.name),
-                                !Objects.isNull(user.get(qHome.address))
+                        user.get(qHome.id.count()) > 0
                         )
                 )
                 .collect(Collectors.toList());

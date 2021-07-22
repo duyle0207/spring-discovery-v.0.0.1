@@ -1,6 +1,8 @@
 package com.duylv.springdiscovery.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -27,7 +29,6 @@ public class User extends BaseEntity {
         this.name = name;
     }
 
-    @ManyToMany(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = {"users"})
     @JoinTable(
             name = "user_role",
@@ -36,6 +37,7 @@ public class User extends BaseEntity {
     )
     private Set<Role> roles;
 
+    @Fetch(FetchMode.JOIN)
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<Home> homes;
 
